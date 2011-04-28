@@ -7,6 +7,30 @@
   <%= csrf_meta_tag %>
 </head>
 <body>
+<div id="fb-root"></div>
+<script src="http://connect.facebook.net/en_US/all.js"></script>
+<script>
+    //        window.fbAsyncInit = function() {
+              FB.init({
+                appId  : '<%= Facebooker2.app_id %>',
+                status : true, // check login status
+                cookie : true, // enable cookies to allow the server to access the session
+                channelUrl : 'true', // add channelURL to avoid IE redirect problems
+                xfbml  : true  // parse XFBML
+              });
+              FB.getLoginStatus(function(response) {
+                    if (response.session) {
+                      init();
+                    } else {
+                      // no user session available, someone you dont know
+                    }
+                });
+    //        };
+  </script>
+
+<% if current_user %>
+    <%= "Bienvenido #{current_user.facebook.first_name}!" %>
+<% end %>
 
 <%= yield %>
 

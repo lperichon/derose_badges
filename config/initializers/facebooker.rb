@@ -1,0 +1,1 @@
+Facebooker2.configuration=Settings.facebook

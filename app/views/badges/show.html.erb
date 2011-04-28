@@ -1,0 +1,16 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Name:</b>
+  <%= @badge.name %>
+</p>
+
+<div id="jfmfs-container"></div>
+<div id="buttons">
+<% if current_user.admin? %>
+<%= link_to 'Editar', edit_badge_path(@badge), :class => 'orange button' %>
+<%= link_to 'Eliminar', @badge, :confirm => 'Are you sure?', :method => :delete, :class => 'orange button' %>
+<% end %>
+<%= link_to 'Atras', badges_path, :class => 'orange button' %>
+<a href="#" onclick="publish(<%= @badge.to_json %>);return false;" class="orange button">Finalizar</a>
+</div>

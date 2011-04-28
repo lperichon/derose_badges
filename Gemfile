@@ -33,7 +33,9 @@ gem "cucumber-rails", :group => [:development, :test]
 gem "capybara", :group => [:development, :test]
 gem "jammit"
 gem "jquery-rails"
-gem "omniauth", "~> 0.2.0"
 gem "rspec-rails", ">= 2.0.1", :group => [:development, :test]
+gem "shoulda", :group => [:development, :test]
 gem "haml", ">= 3.0.0"
 gem "settingslogic"
+gem "facebooker2"
+gem "mogli"

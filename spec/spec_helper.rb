@@ -25,3 +25,11 @@ RSpec.configure do |config|
   # instead of true.
   config.use_transactional_fixtures = true
 end
+
+def mock_user(stubs={})
+  @mock_user ||= mock_model(User, stubs).as_null_object
+end
+
+def mock_badge(stubs={})
+  @mock_badge ||= mock_model(Badge, stubs).as_null_object
+end

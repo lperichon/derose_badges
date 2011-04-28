@@ -1,0 +1,19 @@
+<h2>Elejí la insignia</h2>
+
+<ul id="badge_list">
+<% @badges.each do |badge| %>
+  <li class="badge">
+    <a href='<%= badge_path(badge) %>'>
+        <%= image_tag badge.picture_url %>
+        <span class="name"><%= badge.name %></span>
+    </a>
+  </li>
+<% end %>
+</ul>
+<div id="buttons">
+<% if current_user.admin? %>
+<%= link_to 'New Badge', new_badge_path, :class => 'orange button' %>
+<% end %>
+<%= link_to 'Back', root_path, :class => 'orange button' %>
+</div>
+

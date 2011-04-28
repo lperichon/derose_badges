@@ -1,6 +1,10 @@
 javascripts:
   app:
-    - public/javascripts/*.js
+    - public/javascripts/jquery.min.js
+    - public/javascripts/rails.js
+    - public/javascripts/jquery.facebook.multifriend.select.min.js
+    - public/javascripts/application.js
 stylesheets:
   app:
-    - public/stylesheets/*.css
+    - public/stylesheets/jquery.facebook.multifriend.select.css
+    - public/stylesheets/application.css

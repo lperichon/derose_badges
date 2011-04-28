@@ -1,0 +1,23 @@
+<% if current_user.admin? %>
+    <h2>Administrar</h2>
+    <%= link_to 'Administrar Badges', badges_path %><br />
+    <%= link_to 'Administrar Users', users_path %>
+<% end %>
+<h2>Entregar una insignia a un amigo</h2>
+<% if current_user.confirmed? %>
+  <div id="start_button_wrapper"><%= link_to 'Comenzar', badges_path, :class => 'orange button' %></div>
+<% else %>
+  <p>Para poder entregar una insignia tu cuenta tiene que ser confirmada!</p>
+  <p>Enviá un mensaje al administrador</p>
+<% end %>
+<% if current_user %>
+  <h2>Estas son tus insignias</h2>
+  <ul id="badge_list" class="assigned">
+    <% current_user.badges.each do |badge| %>
+    <li class="badge">
+      <%= image_tag badge.picture_url %>
+      <span class="name"><%= badge.name %></span>
+    </li>
+    <% end %>
+  </ul>
+<% end %>

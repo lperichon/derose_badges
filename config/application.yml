@@ -6,10 +6,28 @@ defaults: &defaults
 
 development:
   <<: *defaults
-  neat_setting: 800
+  facebook:
+    app_id: 118088618271357
+    secret: 458fca2d7c9a619f2097efe85580c93d
+    api_key: bb1b4bb426cc792da272a910cbe26d73
 
 test:
   <<: *defaults
+  facebook:
+    app_id: 118088618271357
+    secret: 458fca2d7c9a619f2097efe85580c93d
+    api_key: bb1b4bb426cc792da272a910cbe26d73
+
+staging:
+  <<: *defaults
+  facebook:
+    app_id: <%= ENV['FACEBOOK_APP_ID'] %>
+    secret: <%= ENV['FACEBOOK_APP_SECRET'] %>
+    api_key: <%= ENV['FACEBOOK_API_KEY'] %>
 
 production:
   <<: *defaults
+  facebook:
+    app_id: <%= ENV['FACEBOOK_APP_ID'] %>
+    secret: <%= ENV['FACEBOOK_APP_SECRET'] %>
+    api_key: <%= ENV['FACEBOOK_API_KEY'] %>
