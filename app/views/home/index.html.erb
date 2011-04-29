@@ -8,7 +8,7 @@
   <div id="start_button_wrapper"><%= link_to 'Comenzar', badges_path, :class => 'orange button' %></div>
 <% else %>
   <p>Para poder entregar una insignia tu cuenta tiene que ser confirmada!</p>
-  <p>Enviá un mensaje al administrador</p>
+  <p>Enviá un <%= link_to 'mensaje al administrador', 'http://www.facebook.com/lperichon', :target => '_blank' %></p>
 <% end %>
 <% if current_user %>
   <h2>Estas son tus insignias</h2>
