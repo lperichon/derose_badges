@@ -46,16 +46,16 @@ describe AssignsController do
       end
     end
 
-    describe "with no authorization" do
+    describe "as an unconfirmed user" do
       before do
         controller.stub!(:ensure_authenticated_to_facebook).and_return(false)
         controller.stub!(:current_user).and_return(mock_user(:confirmed? => false))
       end
 
-      it "redirects" do
+      it "redirects to home" do
         b = Badge.create(:name => 'Test Badge', :picture_url => 'test')
         post :create, :fb_user_id => 123, :badge_id => b.id, :format => :json
-        response.should be_redirect
+        response.should redirect_to(root_url)
       end
     end
   end

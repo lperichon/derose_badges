@@ -2,6 +2,9 @@ require 'spec_helper'
 
 describe "badges/new.html.erb" do
   before(:each) do
+    @current_user = mock_user()
+    view.stub!(:current_user).and_return(@current_user)
+
     assign(:badge, stub_model(Badge,
       :name => "MyString"
     ).as_new_record)

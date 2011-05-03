@@ -6,6 +6,6 @@ describe "users/show.html.erb" do
   end
 
   it "renders attributes in <p>" do
-    render
+    pending
   end
 end

@@ -67,10 +67,10 @@ class ApplicationController < ActionController::Base
   end
 
   def require_admin
-    redirect_to 'http://google.com' unless current_user.admin?
+    redirect_to root_url unless current_user.admin?
   end
 
   def require_confirm
-    redirect_to 'http://google.com' unless current_user.confirmed?
+    redirect_to root_url unless current_user.confirmed?
   end
 end

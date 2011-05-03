@@ -3,7 +3,7 @@ DeroseBadges::Application.routes.draw do
 
   resources :badges
 
-  resources :users
+  resources :users, :except => [:create, :new]
 
   resources :assigns, :only => :create
 

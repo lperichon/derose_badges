@@ -7,115 +7,253 @@ require 'spec_helper'
 describe BadgesController do
 
   describe "GET index" do
-    it "assigns all badges as @badges" do
-      Badge.stub(:all) { [mock_badge] }
-      get :index
-      assigns(:badges).should eq([mock_badge])
+    describe "as a confirmed user" do
+      before do
+        controller.stub!(:ensure_authenticated_to_facebook).and_return(false)
+        controller.stub!(:current_user).and_return(mock_user(:confirmed? => true))
+      end
+
+      it "assigns all badges as @badges" do
+        Badge.stub(:all) { [mock_badge] }
+        get :index
+        assigns(:badges).should eq([mock_badge])
+      end
+    end
+
+    describe "as an unconfirmed user" do
+      before do
+        controller.stub!(:ensure_authenticated_to_facebook).and_return(false)
+        controller.stub!(:current_user).and_return(mock_user(:confirmed? => false))
+      end
+
+      it "redirects to home" do
+        get :index
+        response.should redirect_to(root_url)
+      end
     end
   end
 
   describe "GET show" do
-    it "assigns the requested badge as @badge" do
-      Badge.stub(:find).with("37") { mock_badge }
-      get :show, :id => "37"
-      assigns(:badge).should be(mock_badge)
+    describe "as a confirmed user" do
+      before do
+        controller.stub!(:ensure_authenticated_to_facebook).and_return(false)
+        controller.stub!(:current_user).and_return(mock_user(:confirmed? => true))
+      end
+
+      it "assigns the requested badge as @badge" do
+        Badge.stub(:find).with("37") { mock_badge }
+        get :show, :id => "37"
+        assigns(:badge).should be(mock_badge)
+      end
+    end
+
+    describe "as an unconfirmed user" do
+      before do
+        controller.stub!(:ensure_authenticated_to_facebook).and_return(false)
+        controller.stub!(:current_user).and_return(mock_user(:confirmed? => false))
+      end
+
+      it "redirects to home" do
+        Badge.stub(:find).with("37") { mock_badge }
+        get :show, :id => "37"
+        response.should be_redirect
+      end
     end
   end
 
   describe "GET new" do
-    it "assigns a new badge as @badge" do
-      Badge.stub(:new) { mock_badge }
-      get :new
-      assigns(:badge).should be(mock_badge)
+    describe "as an admin user" do
+      before do
+        controller.stub!(:ensure_authenticated_to_facebook).and_return(false)
+        controller.stub!(:current_user).and_return(mock_user(:confirmed? => true, :admin? => true))
+      end
+
+      it "assigns a new badge as @badge" do
+        Badge.stub(:new) { mock_badge }
+        get :new
+        assigns(:badge).should be(mock_badge)
+      end
+    end
+
+    describe "as a non admin user" do
+      before do
+        controller.stub!(:ensure_authenticated_to_facebook).and_return(false)
+        controller.stub!(:current_user).and_return(mock_user(:confirmed? => true, :admin? => false))
+      end
+
+      it "redirects to home" do
+        Badge.stub(:new) { mock_badge }
+        get :new
+        response.should redirect_to(root_url)
+      end
     end
   end
 
   describe "GET edit" do
-    it "assigns the requested badge as @badge" do
-      Badge.stub(:find).with("37") { mock_badge }
-      get :edit, :id => "37"
-      assigns(:badge).should be(mock_badge)
+    describe "as an admin user" do
+      before do
+        controller.stub!(:ensure_authenticated_to_facebook).and_return(false)
+        controller.stub!(:current_user).and_return(mock_user(:confirmed? => true, :admin? => true))
+      end
+
+      it "assigns the requested badge as @badge" do
+        Badge.stub(:find).with("37") { mock_badge }
+        get :edit, :id => "37"
+        assigns(:badge).should be(mock_badge)
+      end
+    end
+
+    describe "as a non admin user" do
+      before do
+        controller.stub!(:ensure_authenticated_to_facebook).and_return(false)
+        controller.stub!(:current_user).and_return(mock_user(:confirmed? => true, :admin? => false))
+      end
+
+      it "redirects to home" do
+        Badge.stub(:find).with("37") { mock_badge }
+        get :edit, :id => "37"
+        response.should redirect_to(root_url)
+      end
     end
   end
 
   describe "POST create" do
-    describe "with valid params" do
-      it "assigns a newly created badge as @badge" do
-        Badge.stub(:new).with({'these' => 'params'}) { mock_badge(:save => true) }
-        post :create, :badge => {'these' => 'params'}
-        assigns(:badge).should be(mock_badge)
+    describe "as an admin user" do
+      before do
+        controller.stub!(:ensure_authenticated_to_facebook).and_return(false)
+        controller.stub!(:current_user).and_return(mock_user(:confirmed? => true, :admin? => true))
       end
 
-      it "redirects to the created badge" do
-        Badge.stub(:new) { mock_badge(:save => true) }
-        post :create, :badge => {}
-        response.should redirect_to(badge_url(mock_badge))
+      describe "with valid params" do
+        it "assigns a newly created badge as @badge" do
+          Badge.stub(:new).with({'these' => 'params'}) { mock_badge(:save => true) }
+          post :create, :badge => {'these' => 'params'}
+          assigns(:badge).should be(mock_badge)
+        end
+
+        it "redirects to the created badge" do
+          Badge.stub(:new) { mock_badge(:save => true) }
+          post :create, :badge => {}
+          response.should redirect_to(badge_url(mock_badge))
+        end
+      end
+
+      describe "with invalid params" do
+        it "assigns a newly created but unsaved badge as @badge" do
+          Badge.stub(:new).with({'these' => 'params'}) { mock_badge(:save => false) }
+          post :create, :badge => {'these' => 'params'}
+          assigns(:badge).should be(mock_badge)
+        end
+
+        it "re-renders the 'new' template" do
+          Badge.stub(:new) { mock_badge(:save => false) }
+          post :create, :badge => {}
+          response.should render_template("new")
+        end
       end
     end
 
-    describe "with invalid params" do
-      it "assigns a newly created but unsaved badge as @badge" do
-        Badge.stub(:new).with({'these' => 'params'}) { mock_badge(:save => false) }
-        post :create, :badge => {'these' => 'params'}
-        assigns(:badge).should be(mock_badge)
+    describe "as a non admin user" do
+      before do
+        controller.stub!(:ensure_authenticated_to_facebook).and_return(false)
+        controller.stub!(:current_user).and_return(mock_user(:confirmed? => true, :admin? => false))
       end
 
-      it "re-renders the 'new' template" do
-        Badge.stub(:new) { mock_badge(:save => false) }
-        post :create, :badge => {}
-        response.should render_template("new")
+      it "redirects to home" do
+        Badge.stub(:new).with({'these' => 'params'}) { mock_badge(:save => true) }
+        post :create, :badge => {'these' => 'params'}
+        response.should redirect_to(root_url)
       end
     end
   end
 
   describe "PUT update" do
-    describe "with valid params" do
-      it "updates the requested badge" do
-        Badge.stub(:find).with("37") { mock_badge }
-        mock_badge.should_receive(:update_attributes).with({'these' => 'params'})
-        put :update, :id => "37", :badge => {'these' => 'params'}
+    describe "as an admin user" do
+      before do
+        controller.stub!(:ensure_authenticated_to_facebook).and_return(false)
+        controller.stub!(:current_user).and_return(mock_user(:confirmed? => true, :admin? => true))
       end
 
-      it "assigns the requested badge as @badge" do
-        Badge.stub(:find) { mock_badge(:update_attributes => true) }
-        put :update, :id => "1"
-        assigns(:badge).should be(mock_badge)
+      describe "with valid params" do
+        it "updates the requested badge" do
+          Badge.stub(:find).with("37") { mock_badge }
+          mock_badge.should_receive(:update_attributes).with({'these' => 'params'})
+          put :update, :id => "37", :badge => {'these' => 'params'}
+        end
+
+        it "assigns the requested badge as @badge" do
+          Badge.stub(:find) { mock_badge(:update_attributes => true) }
+          put :update, :id => "1"
+          assigns(:badge).should be(mock_badge)
+        end
+
+        it "redirects to the badge" do
+          Badge.stub(:find) { mock_badge(:update_attributes => true) }
+          put :update, :id => "1"
+          response.should redirect_to(badge_url(mock_badge))
+        end
       end
 
-      it "redirects to the badge" do
-        Badge.stub(:find) { mock_badge(:update_attributes => true) }
-        put :update, :id => "1"
-        response.should redirect_to(badge_url(mock_badge))
+      describe "with invalid params" do
+        it "assigns the badge as @badge" do
+          Badge.stub(:find) { mock_badge(:update_attributes => false) }
+          put :update, :id => "1"
+          assigns(:badge).should be(mock_badge)
+        end
+
+        it "re-renders the 'edit' template" do
+          Badge.stub(:find) { mock_badge(:update_attributes => false) }
+          put :update, :id => "1"
+          response.should render_template("edit")
+        end
       end
     end
 
-    describe "with invalid params" do
-      it "assigns the badge as @badge" do
-        Badge.stub(:find) { mock_badge(:update_attributes => false) }
-        put :update, :id => "1"
-        assigns(:badge).should be(mock_badge)
+    describe "as a non admin user" do
+      before do
+        controller.stub!(:ensure_authenticated_to_facebook).and_return(false)
+        controller.stub!(:current_user).and_return(mock_user(:confirmed? => true, :admin? => false))
       end
 
-      it "re-renders the 'edit' template" do
-        Badge.stub(:find) { mock_badge(:update_attributes => false) }
+      it "redirects to home" do
+        Badge.stub(:find) { mock_badge(:update_attributes => true) }
         put :update, :id => "1"
-        response.should render_template("edit")
+        response.should redirect_to(root_url)
       end
     end
   end
 
   describe "DELETE destroy" do
-    it "destroys the requested badge" do
-      Badge.stub(:find).with("37") { mock_badge }
-      mock_badge.should_receive(:destroy)
-      delete :destroy, :id => "37"
+    describe "as an admin user" do
+      before do
+        controller.stub!(:ensure_authenticated_to_facebook).and_return(false)
+        controller.stub!(:current_user).and_return(mock_user(:confirmed? => true, :admin? => true))
+      end
+
+      it "destroys the requested badge" do
+        Badge.stub(:find).with("37") { mock_badge }
+        mock_badge.should_receive(:destroy)
+        delete :destroy, :id => "37"
+      end
+
+      it "redirects to the badges list" do
+        Badge.stub(:find) { mock_badge }
+        delete :destroy, :id => "1"
+        response.should redirect_to(badges_url)
+      end
     end
 
-    it "redirects to the badges list" do
-      Badge.stub(:find) { mock_badge }
-      delete :destroy, :id => "1"
-      response.should redirect_to(badges_url)
+    describe "as a non admin user" do
+      before do
+        controller.stub!(:ensure_authenticated_to_facebook).and_return(false)
+        controller.stub!(:current_user).and_return(mock_user(:confirmed? => true, :admin? => false))
+      end
+
+      it "redirects to home" do
+        Badge.stub(:find) { mock_badge }
+        delete :destroy, :id => "1"
+        response.should redirect_to(root_url)
+      end
     end
   end
-
 end
