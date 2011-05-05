@@ -5,6 +5,6 @@ GEMFILE_PATH = File.expand_path('../../Gemfile', __FILE__)
 if File.exist?(GEMFILE_PATH)
   # Force the rails 3 application to use its Gemfile
   ENV['BUNDLE_GEMFILE'] = GEMFILE_PATH
-  require 'bundler/setup'
+  require 'bundler'
   Bundler.setup
 end
