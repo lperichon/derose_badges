@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110427130007) do
+ActiveRecord::Schema.define(:version => 20110506144931) do
 
   create_table "badges", :force => true do |t|
     t.string   "name"
@@ -27,7 +27,7 @@ ActiveRecord::Schema.define(:version => 20110427130007) do
   end
 
   create_table "users", :force => true do |t|
-    t.integer  "facebook_id",          :null => false
+    t.integer  "facebook_id",          :limit => 8, :null => false
     t.string   "access_token"
     t.datetime "access_token_expires"
     t.datetime "created_at"
