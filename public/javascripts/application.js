@@ -38,7 +38,7 @@ function publish(badge) {
 		  }
           else {
 			  //$.post("http://getbadg.es/metrics/metric/badges_free/816/num_posts");
-              $.post("/assigns.json", { fb_user_id: to, badge_id: badge.id });
+              $.post("/assigns", { fb_user_id: to, badge_id: badge.id }, "json");
 		  }
 		  //fbInvite();
 		}
