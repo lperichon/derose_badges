@@ -12,11 +12,11 @@ function init() {
 };
 
 function publish(badge) {
-    var url = ""
+    var url = "http://www.facebook.com/apps/application.php?id=197594353619331"
 	var picture = badge.picture_url;
 	var name = badge.name;
-    var caption = "caption caption caption cap";
-	var description = "Una pequeña descripción de los grados y lo que significan.";
+    var caption = badge.caption;
+	var description = badge.description;
     var message = "¡Felicitaciones! Alcanzaste el grado de " + badge.name + '.';
 	var actionLinks = [{ 'text': 'Enviar', 'href': url }];
 	var properties = '';
@@ -37,10 +37,8 @@ function publish(badge) {
 		  if (response == null || response == undefined || response == false) {
 		  }
           else {
-			  //$.post("http://getbadg.es/metrics/metric/badges_free/816/num_posts");
               $.post("/assigns", { fb_user_id: to, badge_id: badge.id }, "json");
 		  }
-		  //fbInvite();
 		}
       );
 }
