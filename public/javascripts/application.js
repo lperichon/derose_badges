@@ -11,6 +11,7 @@ function init() {
   });
 };
 
+
 function publish(badge) {
     var url = "http://www.facebook.com/apps/application.php?id=197594353619331"
 	var picture = badge.picture_url;
