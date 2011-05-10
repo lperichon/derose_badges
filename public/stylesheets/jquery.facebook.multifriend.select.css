@@ -20,8 +20,8 @@ limitations under the License.
     background-color: #fcfcfc;
     border: 1px solid #ccc;
     font: 11px verdana, arial, helvetica, sans-serif;
-    margin: 2px 0;
-    padding: 2px 4px;
+    margin: 0;
+    padding: 0 4px;
 }
 .jfmfs-friend {                
     cursor:pointer;
@@ -70,6 +70,7 @@ limitations under the License.
 #jfmfs-friend-selector {
     width:725px;   
     height:430px;
+    margin: 0 auto;
 }
 
 #jfmfs-inner-header {

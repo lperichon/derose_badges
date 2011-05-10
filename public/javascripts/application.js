@@ -1,7 +1,13 @@
 function init() {
   $("#jfmfs-container").jfmfs({
       max_selected: 1,
-      max_selected_message: "{0} of {1} selected",
+      labels: {
+        selected: "Seleccionado",
+        filter_default: "",
+        filter_title: "Buscar amigo:",
+        all: "Todos",
+        max_selected_message: ""
+      },
       friend_fields: "id,name,last_name",
       sorter: function(a, b) {
         var x = a.last_name.toLowerCase();
