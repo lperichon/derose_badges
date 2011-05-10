@@ -40,6 +40,18 @@ function publish(badge) {
           else {
               $.post("/assigns", { fb_user_id: to, badge_id: badge.id }, "json");
 		  }
+          invite();
 		}
       );
 }
+
+function invite(){
+        FB.ui({ method: 'apprequests',
+                message: '¡Entregá insignias por facebook!',
+          title: '¡Invitá a otros instructores!'
+          }, function(response){
+            if (response != null && response != undefined && response != false) {
+            } else {
+            }
+        });
+    }
